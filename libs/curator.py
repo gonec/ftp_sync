@@ -24,13 +24,16 @@ class Curator:
 		login    = config['FTP']['login']
 		password = config['FTP']['password']
 		dr = os.path.abspath(os.curdir)	
+		print(dr)
 		tmp =  config['FTP']['tmp_dir']
 		self._tmp_dir = os.path.join(dr, tmp)	
+		print(self._tmp_dir)	
 		if os.path.exists( self._tmp_dir ):		
+			print(self._tmp_dir)	
 			print("ALREADY EXISTS")		
 		else:
 			os.mkdir( self._tmp_dir )			
-
+					
 		print("WORKING DIR: {}".format(self._tmp_dir) )
 		self.prefix="inbox"
 		print("Reading from cfg host: {0}, {1}, {2}".format(host, login, password) )
@@ -44,8 +47,7 @@ class Curator:
 	
 	def download(self, msg):
 		print('downloading', msg)	
-		filename = msg;
-		os.path.join(self._tmp_dir, msg)	
+		filename = os.path.join(self._tmp_dir, msg)	
 		lf = open(filename, "wb")
 		flDownload = True	
 		try:	
