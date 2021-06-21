@@ -4,6 +4,7 @@ from libs.dbsync import DbSync
 from libs.error import DbError
 from libs.ftp_mover import FtpMover
 import time
+import os
 COORD = 1
 NOT_COORD = 2
 config_file = 'sync.ini'
@@ -13,17 +14,16 @@ pidfile = os.path.join("/tmp", os.path.splitext(script_name)[0]) + ".pid"
 
 def create_pidfile():
 	if os.path.exists(pidfile):
-        	with open(pidfile, "r") as _file:
-            		last_pid = int(_file.read())
-
-        	# Checking if process is still running
-        	last_process_cmdline = "/proc/%d/cmdline" % last_pid
-       		print(last_process_cmdline) 
+		with open(pidfile, "r") as _file:
+			last_pid = int( _file.read() )
+				# Checking if process is still running
+		last_process_cmdline = "/proc/%d/cmdline" % last_pid
+		print(last_process_cmdline) 
 		if os.path.exists(last_process_cmdline):
-            		with open(last_process_cmdline, "r") as _file:
-                		cmdline = _file.read()
-            			if script_name in cmdline:
-                			raise Exception("Script already running...")
+			with open(last_process_cmdline, "r") as _file:
+				cmdline = _file.read()
+			if script_name in cmdline:
+				raise Exception("Script already running...")
 	#
 	with open(pidfile, "w") as _file:
 		pid = str(os.getpid())
@@ -87,12 +87,9 @@ def main_loop():
 	except DbError as e:
 		print("DB ERROR")	
 
-
 if __name__ == "__main__":
 	try: 
 		create_pidfile()
 		main_loop()
 	except BaseException as e:
 		print(e)
-
-
