@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from libs.curator import Curator 
 from libs.dbsync import DbSync
 #from libs.analizer import Analizer 
