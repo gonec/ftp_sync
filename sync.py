@@ -12,22 +12,22 @@ script_name = os.path.basename(__file__)
 pidfile = os.path.join("/tmp", os.path.splitext(script_name)[0]) + ".pid"
 
 def create_pidfile():
-    if os.path.exists(pidfile):
-        with open(pidfile, "r") as _file:
-            last_pid = int(_file.read())
+	if os.path.exists(pidfile):
+        	with open(pidfile, "r") as _file:
+            		last_pid = int(_file.read())
 
-        # Checking if process is still running
-        last_process_cmdline = "/proc/%d/cmdline" % last_pid
-       	print(last_process_cmdline) 
-	if os.path.exists(last_process_cmdline):
-            with open(last_process_cmdline, "r") as _file:
-                cmdline = _file.read()
-            if script_name in cmdline:
-                raise Exception("Script already running...")
-
-    with open(pidfile, "w") as _file:
-        pid = str(os.getpid())
-        _file.write(pid)
+        	# Checking if process is still running
+        	last_process_cmdline = "/proc/%d/cmdline" % last_pid
+       		print(last_process_cmdline) 
+		if os.path.exists(last_process_cmdline):
+            		with open(last_process_cmdline, "r") as _file:
+                		cmdline = _file.read()
+            			if script_name in cmdline:
+                			raise Exception("Script already running...")
+	#
+	with open(pidfile, "w") as _file:
+		pid = str(os.getpid())
+		_file.write(pid)
 
 def main_loop():
 	try:
@@ -86,6 +86,7 @@ def main_loop():
 			time.sleep(10)
 	except DbError as e:
 		print("DB ERROR")	
+
 
 if __name__ == "__main__":
 	try: 
