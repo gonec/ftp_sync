@@ -1,0 +1,2 @@
+@reboot root bash /home/user/ftp_sync/sync.sh&
+*/5 * * * sun root bash /home/user/ftp_sync/sync.sh&
