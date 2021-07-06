@@ -65,18 +65,28 @@ class DbSync:
 			return True						
 
 	def save(self, msg, status, msg_type):
-		sql_insert_query = "INSERT INTO files (file_name, status, msg_type) VALUES (\'{0}\', {1}, {2})".format(msg, status, msg_type)
-		cursor = self._connection.cursor()
-		cursor.execute(sql_insert_query)
-		self._connection.commit()
-		self.insert_id = cursor.lastrowid	
-		print ("LAST ROW ID: ", self.insert_id)
-		row_count = cursor.rowcount
-		if row_count == 1:
-			return True
-		else:
-			return False
+		try:
+			sql_insert_query = "INSERT INTO files (file_name, status, msg_type) VALUES (\'{0}\', {1}, {2})".format(msg, status, msg_type)
+			cursor = self._connection.cursor()
+			cursor.execute(sql_insert_query)
+			self._connection.commit()
+			self.insert_id = cursor.lastrowid	
+			print ("LAST ROW ID: ", self.insert_id)
+			row_count = cursor.rowcount
+			if row_count == 1:
+				return True
+			else:
+				return False
 
+		except:
+			return False	
+	def update_status (self, id,  status):
+		query = "UPDATE files SET status={0} WHERE id={1}".format(status, id)	
+		cursor = self._connection.cursor()
+		cursor.execute(query)
+		self._connection.commit()
+
+	
 	def last_id(self):
 		return self.insert_id
 

@@ -33,8 +33,6 @@ def create_pidfile():
 
 def main_loop():
 	try:
-		# base_dir - папка где лежит sync.py и папка config
-		# config_file - имя конфигурационного файла 
 		curator = Curator( base_dir, config_file )
 		dbsync = DbSync()
 		dbsync.connect()
@@ -67,6 +65,9 @@ def main_loop():
 						dbsync.save(msg_file, STATUS, MSG_TYPE )			
 						try:	
 							mover.move(msg_file)
+							SAVED = 7;
+							id = dbsync.last_id()
+							dbsync.update_status(id, SAVED)  	
 							file_sz = mover.get_size(msg_file)	
 							print( "file moved. Size: {0}".format(file_sz) )
 						except ftplib.error_temp as err:	
