@@ -61,8 +61,10 @@ def main_loop():
 						#else:	
 						#	coord_type = NOT_COORD 
 						#dbsync.save(msg_file, 0, coord_type )			
-						
-						dbsync.save(msg_file, 0, 1 )			
+					
+						STATUS = 0
+						MSG_TYPE = 1		
+						dbsync.save(msg_file, STATUS, MSG_TYPE )			
 						try:	
 							mover.move(msg_file)
 							file_sz = mover.get_size(msg_file)	
