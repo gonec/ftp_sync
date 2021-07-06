@@ -13,7 +13,7 @@ config_file = 'sync.ini'
 
 script_name = os.path.basename(__file__)
 pidfile = os.path.join("/tmp", os.path.splitext(script_name)[0]) + ".pid"
-
+base_dir = os.path.dirname ( os.path.abspath( __file__) )
 def create_pidfile():
 	if os.path.exists(pidfile):
 		with open(pidfile, "r") as _file:
@@ -33,10 +33,12 @@ def create_pidfile():
 
 def main_loop():
 	try:
-		curator = Curator( config_file )
+		# base_dir - папка где лежит sync.py и папка config
+		# config_file - имя конфигурационного файла 
+		curator = Curator( base_dir, config_file )
 		dbsync = DbSync()
 		dbsync.connect()
-		mover = FtpMover( config_file )	
+		mover = FtpMover( base_dir, config_file )	
 		#analizer = Analizer()
 	except IOError as e:
 		print("EXCEPTION: ", e)
@@ -84,7 +86,7 @@ def main_loop():
 				mover.ping()
 			except:
 				print("reconnecting")
-				mover = FtpMover(config_file)
+				mover = FtpMover(base_dir, config_file)
 			time.sleep(10)
 	except DbError as e:
 		print("DB ERROR")	

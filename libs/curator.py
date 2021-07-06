@@ -4,12 +4,13 @@ import os.path
 import configparser
 class Curator:
 	#def __init__(self, config_file='sync.ini'):
-	def __init__(self, cfg_file="sync.ini"):
+	def __init__(self, base_dir, cfg_file="sync.ini"):
 		print('INIT CURATOR CFG FILE: ', cfg_file)
 		self.msg_dir='/inbox'
 		config = configparser.ConfigParser()
 		#config.read("../config/{0}".format(config_file)
-		config_file_path ="./config/{0}".format(cfg_file)
+		config_file_path = os.path.join(base_dir, 'config', cfg_file)
+		print ("CURATOR config_file: " + config_file_path)
 		if not os.path.exists(config_file_path):
 			raise IOError( "not found cfg file {}".format(config_file_path) )		
 		print('config file path', config_file_path) 
@@ -23,10 +24,9 @@ class Curator:
 		host     = config['FTP']['host'] 
 		login    = config['FTP']['login']
 		password = config['FTP']['password']
-		dr = os.path.abspath(os.curdir)	
-		print(dr)
+		#dr = os.path.abspath(os.curdir)	
 		tmp =  config['FTP']['tmp_dir']
-		self._tmp_dir = os.path.join(dr, tmp)	
+		self._tmp_dir = os.path.join(base_dir, tmp)	
 		print(self._tmp_dir)	
 		if os.path.exists( self._tmp_dir ):		
 			print(self._tmp_dir)	

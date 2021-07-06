@@ -4,11 +4,11 @@ import os.path
 import configparser
 class FtpMover:
 	#def __init__(self, config_file='sync.ini'):
-	def __init__(self, cfg_file="sync.ini"):
+	def __init__(self, base_dir,  cfg_file="sync.ini"):
 		print('INIT FTP_MOVER CFG FILE: ')
 		config = configparser.ConfigParser()
 		#config.read("../config/{0}".format(config_file)
-		config_file_path ="./config/{0}".format(cfg_file)
+		config_file_path = os.path.join(base_dir, "config", cfg_file)
 		if not os.path.exists(config_file_path):
 			raise IOError( "not found cfg file {}".format(config_file_path) )		
 		print('config file path', config_file_path) 
@@ -27,7 +27,7 @@ class FtpMover:
 		dr = os.path.abspath(os.curdir)	
 		print(dr)
 		tmp =  config['FTP']['tmp_dir']
-		self._tmp_dir = os.path.join(dr, tmp)
+		self._tmp_dir = os.path.join(base_dir, tmp)
 		print("Reading from cfg host: {0}, {1}, {2}".format(self.host, self.login, self.password) )
 		self.ftp = FTP(self.host)
 		self.ftp.set_debuglevel(2)	
