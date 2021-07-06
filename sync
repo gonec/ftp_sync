@@ -1,2 +1,3 @@
-@reboot root bash /home/user/ftp_sync/sync.sh&
-*/5 * * * sun root bash /home/user/ftp_sync/sync.sh&
+#@reboot root bash /home/user/ftp_sync/sync.sh&
+#*/1 * * * * root bash /home/user/ftp_sync/sync.sh&
+*/1 * * * * root /usr/bin/python3 /home/user/ftp_sync/sync.py 1>/tmp/cron.log
