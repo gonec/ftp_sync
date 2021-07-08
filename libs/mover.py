@@ -25,3 +25,6 @@ class Mover():
 			raise IOError("can not move file")
 	def remove(self, fl):
 		os.remove(fl)						
+	
+	def clear(self, msg_file):
+		nop

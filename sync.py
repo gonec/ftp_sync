@@ -70,6 +70,7 @@ def main_loop():
 							dbsync.update_status(id, SAVED)  	
 							file_sz = mover.get_size(msg_file)	
 							print( "file moved. Size: {0}".format(file_sz) )
+							mover.clear(msg_file)	
 						except ftplib.error_temp as err:	
 							print("ERROR! Mover error!")
 							while ( False == mover.re_init()):
