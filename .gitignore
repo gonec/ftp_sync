@@ -2,3 +2,4 @@ config/example.ini
 config/alarm.ini
 config/sync.ini
 tmp_msgs/
+ftp_tmp/
