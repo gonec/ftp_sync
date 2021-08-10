@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 from  xml.dom.minidom import parse, parseString
+
 class Analizer():
 	def get_data(self, body, pos, length):
 		dt = body[2*pos : 2*pos + 2*length]	

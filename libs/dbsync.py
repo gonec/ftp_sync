@@ -1,4 +1,12 @@
 import mysql.connector
+import logging
+logging.basicConfig(
+	filename="/tmp/sync.log",
+	level=logging.INFO,
+	format="%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s",
+)
+logger = logging.getLogger(__name__)
+
 from libs.error import DbError
 class Message():
 	def __init__(self, file_name, status, msg_type):

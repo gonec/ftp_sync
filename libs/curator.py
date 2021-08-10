@@ -1,10 +1,21 @@
-from ftplib import FTP 
+import ftplib
 import os
 import os.path
 import configparser
+
+import logging
+ 
+logging.basicConfig(
+	filename="/tmp/sync.log",
+	level=logging.INFO,
+	format="%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s",
+)
+logger = logging.getLogger(__name__)
+
 class Curator:
 	#def __init__(self, config_file='sync.ini'):
 	def __init__(self, base_dir, cfg_file="sync.ini"):
+		logger.info("Curator init...")
 		print('INIT CURATOR CFG FILE: ', cfg_file)
 		self.msg_dir='/inbox'
 		config = configparser.ConfigParser()
@@ -18,8 +29,10 @@ class Curator:
 		print(config.sections())
 		if 'FTP' not in config:
 			print ('SECTION NOT FOUND')
+			logger.info('SECTION NOT FOUND')
 		else:
 			print('SECTION FOUND')
+			logger.info('SECTION FOUND')
 
 		host     = config['FTP']['host'] 
 		login    = config['FTP']['login']
@@ -30,14 +43,15 @@ class Curator:
 		print(self._tmp_dir)	
 		if os.path.exists( self._tmp_dir ):		
 			print(self._tmp_dir)	
-			print("ALREADY EXISTS")		
+			print("ALREADY EXISTS", self._tmp_dir )
+			logger.info("Path ALREADY EXISTS:" + self._tmp_dir )
 		else:
 			os.mkdir( self._tmp_dir )			
 					
 		print("WORKING DIR: {}".format(self._tmp_dir) )
 		self.prefix="inbox"
 		print("Reading from cfg host: {0}, {1}, {2}".format(host, login, password) )
-		self.ftp = FTP(host)
+		self.ftp = ftplib.FTP(host)
 		self.ftp.login(login, password)
 		self.ftp.cwd(self.prefix)
 					
@@ -46,22 +60,28 @@ class Curator:
 		return ls
 	
 	def download(self, msg):
-		print('downloading', msg)	
-		filename = os.path.join(self._tmp_dir, msg)	
+		print('downloading', msg)
+		logger.info('downloading' + msg)
+		filename = os.path.join(self._tmp_dir, msg)
 		lf = open(filename, "wb")
-		flDownload = True	
-		try:	
-			self.ftp.retrbinary("RETR " + msg, lf.write, 8*1024)	
+		flDownload = True
+		try:
+			self.ftp.retrbinary("RETR " + msg, lf.write, 8*1024)
 		except:
 			flDownload = False	
-			print("error dowloading")	
+			print("error dowloading")
+			logger.error( "error dowloading" )
 		finally:
 			lf.close()
 		return flDownload	
+
 	def remove(self, msg):
 		#self.ftp.cwd(self.msg_dir)
-		print('Curator: deleting...', msg)	
+		print( 'Curator: deleting...', msg )
+		logger.info( 'Curator: deleting...' + msg )
 		res = self.ftp.delete(msg)
+		print( 'remove res=', res )
+		logger.info( "remove res = " + res )
 		return res
 	
 	def is_exists(self, msg):
